@@ -1,124 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>System Access By: Ridho</title>
+<title>ACCESS GRANTED</title>
 <style>
     body {
         margin: 0;
-        background: #0b0f14;
-        color: #c7d1db;
-        font-family: Consolas, monospace;
+        background: black;
+        color: #00ff00;
+        font-family: "Courier New", monospace;
+        overflow: hidden;
     }
-
-    .container {
-        padding: 40px;
+    .center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
     }
-
-    .header {
-        color: #58a6ff;
+    h1 {
+        font-size: 40px;
+        text-shadow: 0 0 10px #00ff00;
+    }
+    p {
         font-size: 18px;
-        margin-bottom: 20px;
     }
-
-    .terminal {
-        background: #010409;
-        border: 1px solid #30363d;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
-
-    .line {
-        margin: 5px 0;
-    }
-
-    .success {
-        color: #3fb950;
-    }
-
-    .warning {
-        color: #d29922;
-    }
-
-    .error {
-        color: #f85149;
-    }
-
-    .cursor {
-        display: inline-block;
-        width: 10px;
-        background: #c7d1db;
+    .blink {
         animation: blink 1s infinite;
     }
-
     @keyframes blink {
-        0%, 50%, 100% { opacity: 1; }
-        25%, 75% { opacity: 0; }
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
     }
-
-    .footer {
-        margin-top: 20px;
-        font-size: 12px;
-        color: #8b949e;
+    canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
     }
 </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">Secure Shell Interface v2.4.1</div>
+<canvas id="matrix"></canvas>
 
-    <div class="terminal" id="terminal">
-        <div class="line">Connecting to remote host...</div>
-    </div>
-
-    <div class="footer">
-        Authorized simulation environment • cybersecurity demo
-    </div>
+<div class="center">
+    <h1>⚠ SYSTEM BREACHED ⚠</h1>
+    <p>Anda berhasil mengakses sistem ini</p>
+    <p class="blink">>>> ACCESS GRANTED <<<</p>
+    <br>
+    <p>root@system:~# takeover complete</p>
 </div>
 
 <script>
-const lines = [
-    "Resolving target address...",
-    "Establishing secure connection...",
-    "Bypassing authentication layer...",
-    "Injecting payload...",
-    "Escalating privileges...",
-    "Access level: ROOT",
-    "System integrity: compromised",
-    "Deploying control interface...",
-    "",
-    "[✔] Access Granted"
-];
+// Matrix effect
+var c = document.getElementById("matrix");
+var ctx = c.getContext("2d");
 
-let i = 0;
-const terminal = document.getElementById("terminal");
+c.height = window.innerHeight;
+c.width = window.innerWidth;
 
-function typeLine() {
-    if (i < lines.length) {
-        const div = document.createElement("div");
-        div.classList.add("line");
+var letters = "01";
+letters = letters.split("");
 
-        if (lines[i].includes("Access Granted")) {
-            div.classList.add("success");
-        }
+var font_size = 14;
+var columns = c.width / font_size;
 
-        div.textContent = lines[i];
-        terminal.appendChild(div);
+var drops = [];
+for (var x = 0; x < columns; x++)
+    drops[x] = 1;
 
-        terminal.scrollTop = terminal.scrollHeight;
-        i++;
-        setTimeout(typeLine, 700);
-    } else {
-        const prompt = document.createElement("div");
-        prompt.classList.add("line");
-        prompt.innerHTML = "root@system:~# <span class='cursor'></span>";
-        terminal.appendChild(prompt);
+function draw() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, c.width, c.height);
+
+    ctx.fillStyle = "#0F0";
+    ctx.font = font_size + "px monospace";
+
+    for (var i = 0; i < drops.length; i++) {
+        var text = letters[Math.floor(Math.random()*letters.length)];
+        ctx.fillText(text, i*font_size, drops[i]*font_size);
+
+        if (drops[i]*font_size > c.height && Math.random() > 0.975)
+            drops[i] = 0;
+
+        drops[i]++;
     }
 }
 
-setTimeout(typeLine, 1000);
+setInterval(draw, 33);
 </script>
 
 </body>
